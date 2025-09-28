@@ -1,0 +1,7 @@
+# For the AI agent and graph workflows
+google-generativeai
+langgraph
+langchain_google_genai
+
+# For financial data
+yfinance
