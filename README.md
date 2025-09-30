@@ -62,3 +62,34 @@ analysis through a feedback cycle.
   * Yahoo Finance (Stock prices, financials)
   * NewsAPI.org (Financial news)
   * FRED API (Economic data)
+
+```mermaid
+graph TD
+  subgraph Input
+      A["Target Profile to Replicate<br>(e.g., an Index or Strategy)"]
+  end
+  subgraph "Agent Core"
+      B["Agent Core (Gemini)<br>- Strategy Synthesizer<br>- Derivatives Pricer"]
+      C["Execution Plan<br>1. Fetch Options Chain<br>2. Price with Models<br>3. Calculate Positions"]
+      D["Synthesized Portfolio (Draft)<br>e.g., 'Buy 10 Calls, Sell 10 Puts'"]
+      E["Evaluator (Self-Critique)<br>- How close is the replication?<br>- What is the tracking error?"]
+      F{"Is tracking error acceptable?"}
+  end
+  subgraph "External Tools & Memory"
+      G["Upgraded Tool Belt<br>- Options/Futures Data API<br>- Financial Models<br>- Risk Simulator"]
+      H["Memory / Cache<br>(Successful strategies)"]
+  end
+  subgraph Output
+      I["Final Synthetic Portfolio<br>(List of derivative contracts)"]
+  end
+  %% --- Workflow Connections ---
+  A -- "Input" --> B
+  B -- "Generates" --> C
+  C -- "Uses" --> G
+  C -- "Executes to Create" --> D
+  D -- "Interacts With" --> H
+  D -- "Sends to" --> E
+  E -- "Asks" --> F
+  F -- "YES" --> I
+  F -- "NO / REFINE" --> B
+```  
