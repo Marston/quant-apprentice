@@ -2,6 +2,12 @@
 google-generativeai
 langgraph
 langchain_google_genai
-
+google-genai
 # For financial data
 yfinance
+newsapi-python 
+alphavantage
+# For web scraping and APIs
+beautifulsoup4
+requests
+pandas 
