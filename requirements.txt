@@ -5,8 +5,7 @@ langchain_google_genai
 google-genai
 # For financial data
 yfinance
-newsapi-python 
-alphavantage
+newsapi-python
 # For web scraping and APIs
 beautifulsoup4
 requests
