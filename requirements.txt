@@ -4,9 +4,9 @@ langgraph
 langchain_google_genai
 google-genai
 # For financial data
-yfinance
-newsapi-python
+yfinance==0.2.66
+newsapi-python==0.2.7
 # For web scraping and APIs
 beautifulsoup4
-requests
-pandas 
+requests==2.32.4
+pandas==2.2.2 
