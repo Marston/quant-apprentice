@@ -1,0 +1,52 @@
+{
+  "insights": {
+    "AAPL": [
+      "high_risk",
+      "analyzed on 2025-10-11T18:49:56.328236",
+      "earnings_preview_needed",
+      "high_risk",
+      "analyzed on 2025-10-11T18:50:59.730617",
+      "high_risk",
+      "analyzed on 2025-10-11T18:51:26.502826",
+      "high_risk",
+      "analyzed on 2025-10-11T19:11:22.744611",
+      "high_risk",
+      "analyzed on 2025-10-11T19:11:22.809291",
+      "high_risk",
+      "analyzed on 2025-10-11T19:11:22.868341"
+    ],
+    "TSLA": [
+      "high_risk",
+      "analyzed on 2025-10-11T18:51:26.873810",
+      "earnings_preview_needed",
+      "high_risk",
+      "analyzed on 2025-10-11T19:11:23.206428"
+    ]
+  },
+  "runs": [
+    {
+      "timestamp": "2025-10-11T18:49:56.329587",
+      "symbol": "init"
+    },
+    {
+      "timestamp": "2025-10-11T18:50:59.730922",
+      "symbol": "init"
+    },
+    {
+      "timestamp": "2025-10-11T18:51:26.503206",
+      "symbol": "init"
+    },
+    {
+      "timestamp": "2025-10-11T19:11:22.744852",
+      "symbol": "init"
+    },
+    {
+      "timestamp": "2025-10-11T19:11:22.809545",
+      "symbol": "init"
+    },
+    {
+      "timestamp": "2025-10-11T19:11:22.868587",
+      "symbol": "init"
+    }
+  ]
+}

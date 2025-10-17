@@ -1,0 +1,12 @@
+name: quant-agent
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.12
+  - yfinance>=0.2.40  # Prices/financials
+  - pytest>=8.0  # Testing
+  - streamlit>=1.28.0  # UI stub
+  - pip
+  - pip:
+    - mermaid-python  # Optional: Mermaid in NB (if pip works; skip for now)
