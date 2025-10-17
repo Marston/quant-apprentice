@@ -6,7 +6,7 @@ from typing import Dict, List, Any
 import yfinance as yf
 
 from news_processor import NewsProcessor
-from earnings_analyzers import EarningsAnalyzer
+from src.no_llm.earnings_analyzers import EarningsAnalyzer
 
 # Placeholder for tools (in full build, integrate actual APIs/tools)
 class ToolRouter:

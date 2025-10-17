@@ -1,95 +1,186 @@
 # Quant Apprentice 📈
 
-Quant Apprentice is an autonomous AI agent for advanced financial research, powered by Google's Gemini family of models. 
-This project demonstrates how an agentic system can intelligently plan research, use external tools and APIs, critique its own findings, 
-and provide motivated investment analysis on publicly traded companies.
+Quant Apprentice is an autonomous AI agent designed for sophisticated, end-to-end financial analysis. Powered by Google's Gemini 2.5 Pro,
+this agent emulates the workflow of a real-world investment research team by planning its analysis, using external data APIs, routing tasks
+to specialized sub-agents, and iteratively improving its own conclusions through a self-critique loop.
 
-The entire project is designed to run seamlessly in a Google Colab environment, leveraging modern agentic AI patterns 
-like prompt chaining, task routing, and self-refinement loops.
+This project fulfills the requirements of the "Agentic AI" final project by demonstrating three key agentic workflow patterns: 
+**Prompt Chaining**, **Task Routing**, and the **Evaluator-Optimizer Loop**.
 
-## 🤖 Agent Functions & Capabilities
+## Agent Workflow Diagram
 
-The core of Quant Apprentice is an autonomous agent built to replicate and automate the workflow 
-of a human financial analyst. Its primary capabilities include:
-
-* **Plan Generation**: The agent dynamically creates a multi-step research plan when given a stock symbol
-  (e.g., `GOOGL`, `TSLA`). It outlines the necessary information, from quantitative financial data to qualitative news sentiment.
-* **Dynamic Tool Use**: It intelligently selects and utilizes external APIs to gather data. This includes fetching price history
-  from **Yahoo Finance**, company news from **NewsAPI.org**, and macroeconomic data from the **FRED API**.
-* **Self-Reflection**: After generating an initial analysis, the agent critically assesses its own output. It identifies gaps in 
-  its reasoning, potential biases, or areas that require deeper investigation before reaching a conclusion.
-* **Learning & Adaptation**: The agent maintains a simple memory to learn from its operations. This allows it to refine its 
-  strategies over time, noting which data sources were most useful for specific types of analysis.
-
-## ⚙️ Agentic Workflow Patterns
-
-Quant Apprentice implements three key workflow patterns to achieve its complex, end-to-end analysis capabilities.
-
-### 1. Sequential Prompt Chaining
-
-This pattern is used for structured data processing, especially for news analysis. The agent executes a 
-series of dependent tasks to transform raw news articles into actionable insights.
-
-**Workflow Example:** `Ingest Raw News → Preprocess Text → Classify Market Sentiment → Extract Key Financial Entities → Generate Concise Summary`
-
-### 2. Task Routing
-
-To handle diverse types of information, the main agent acts as a dispatcher, routing tasks to 
-specialized sub-agents. Each sub-agent is an expert fine-tuned for a specific domain.
-
-* **Earnings Analyzer**: Focuses on parsing quarterly earnings reports and financial statements (Revenue, Net Income, EPS).
-* **News Analyzer**: Specializes in sentiment analysis, event detection, and summarization of market-moving news.
-* **Market Analyzer**: Analyzes quantitative market data, including price action, trading volume, and key technical indicators.
-
-### 3. Evaluator–Optimizer Loop
-
-This is the agent's self-improvement mechanism. It allows the system to iteratively refine the quality of its financial 
-analysis through a feedback cycle.
-
-**Workflow:** `Generate Initial Analysis → Evaluate Output Against Quality Rubric → Generate Constructive Feedback → Refine Analysis Using Feedback`
-
-## 🛠️ Technology Stack
-
-* **Core Engine**: Google Gemini Pro
-* **Development Environment**: Google Colab
-* **Key Libraries**:
-  * `google-generativeai`
-  * `langchain` or a similar agent framework
-  * `yfinance`
-  * `pandas`
-  * `requests`
-* **Data & APIs**:
-  * Yahoo Finance (Stock prices, financials)
-  * NewsAPI.org (Financial news)
-  * FRED API (Economic data)
+This diagram illustrates the flow of data and logic from initial input to the final, refined report.
 
 ```mermaid
 graph TD
-  subgraph Input
-      A["Target Profile to Replicate<br>(e.g., an Index or Strategy)"]
-  end
-  subgraph "Agent Core"
-      B["Agent Core (Gemini)<br>- Strategy Synthesizer<br>- Derivatives Pricer"]
-      C["Execution Plan<br>1. Fetch Options Chain<br>2. Price with Models<br>3. Calculate Positions"]
-      D["Synthesized Portfolio (Draft)<br>e.g., 'Buy 10 Calls, Sell 10 Puts'"]
-      E["Evaluator (Self-Critique)<br>- How close is the replication?<br>- What is the tracking error?"]
-      F{"Is tracking error acceptable?"}
-  end
-  subgraph "External Tools & Memory"
-      G["Upgraded Tool Belt<br>- Options/Futures Data API<br>- Financial Models<br>- Risk Simulator"]
-      H["Memory / Cache<br>(Successful strategies)"]
-  end
-  subgraph Output
-      I["Final Synthetic Portfolio<br>(List of derivative contracts)"]
-  end
-  %% --- Workflow Connections ---
-  A -- "Input" --> B
-  B -- "Generates" --> C
-  C -- "Uses" --> G
-  C -- "Executes to Create" --> D
-  D -- "Interacts With" --> H
-  D -- "Sends to" --> E
-  E -- "Asks" --> F
-  F -- "YES" --> I
-  F -- "NO / REFINE" --> B
+    subgraph "Input & Data Gathering (Phase 1)"
+        A[Stock Ticker] --> B(Get Financial Data);
+        A --> C(Get News Articles);
+        A --> D(Get Macro Data);
+        C --> E{Process News};
+    end
+
+    subgraph "Specialist Analysis (Phase 2)"
+        B --> F[Financial Analyst Report];
+        E --> G[News Analyst Report];
+        D --> H[Market Analyst Report];
+    end
+
+    subgraph "Synthesis & Refinement (Phase 3)"
+        I((Synthesize)) -- Creates --> J(Draft Report);
+        J -- Is sent to --> K((Evaluate));
+        K -- Creates --> L(Critic's Feedback);
+        J & L -- Are used to --> M((Refine));
+        M -- Creates --> N(Final Report);
+    end
+
+    subgraph "Output"
+        O[Final Investment Report]
+    end
+
+    %% --- Connections between phases ---
+    F & G & H --> I;
+    N --> O;
 ```
+
+## 🤖 Agentic Capabilities
+
+The agent is built to demonstrate four core autonomous functions:
+
+  * **Planning & Execution**: The agent follows a multi-step plan to gather data from various sources before making a conclusion.
+  * **Dynamic Tool Use**: It intelligently uses its "tool belt" of Python modules to connect to external APIs for real-time data, including:
+      * **Yahoo Finance** (`yfinance`): For company-specific financial fundamentals.
+      * **FRED API** (`fredapi`): For US macroeconomic data and market context.
+      * **NewsAPI** (`newsapi-python`): For the latest news impacting a company.
+  * **Self-Reflection**: The agent's most advanced feature. It generates a draft analysis and then a separate "critic" agent evaluates it for bias, gaps, and weaknesses.
+  * **Learning (Memory)**: The system is designed to save its final, refined reports to a `memory/` directory, allowing it to reference past analyses in future runs.
+
+## ⚙️ Agentic Workflow Patterns
+
+The agent's intelligence is structured around three distinct, required workflow patterns:
+
+### 1\. Prompt Chaining: News Analysis
+
+A sequential pipeline that transforms raw news articles into structured, actionable insights.
+**Workflow**: `Fetch Article` → `Analyze Sentiment` → `Extract Key Takeaways` → `Generate Summary`
+
+### 2\. Task Routing: Specialist Analysts
+
+A "dispatcher" model that directs different types of data to the correct specialist agent for focused analysis. Each specialist is a highly-tuned prompt.
+
+  * **Quantitative Analyst**: Analyzes financial metrics from Yahoo Finance.
+  * **News Analyst**: Interprets the short-term impact of the news analysis.
+  * **Macroeconomic Analyst**: Provides market context from FRED data.
+
+### 3\. Evaluator-Optimizer Loop: Self-Critique
+
+A cyclical process for quality control and refinement, which is the core of the agent's self-reflection capability.
+**Workflow**:
+
+1.  **Synthesize**: A "Chief Strategist" agent combines the specialist reports into a draft investment thesis.
+2.  **Evaluate**: A "Risk Manager" agent critiques the draft, providing constructive feedback.
+3.  **Refine**: The Strategist agent rewrites the report, incorporating the feedback to produce a more robust final version.
+
+## 🛠️ Technology Stack
+
+  * **AI Engine**: Google Gemini 2.5 Pro
+  * **Core Libraries**: `google-generativeai`, `yfinance`, `fredapi`, `newsapi-python`
+  * **Language**: Python 3.12+
+  * **Environment**: Jupyter Notebook
+  * **Utilities**: `python-dotenv`, `pandas`
+
+## 📁 Project Structure
+
+The project is organized into a modular structure to separate concerns and improve readability.
+
+```bash
+Quant-Apprentice/
+├── quant_apprentice.ipynb    # The final, clean demonstration notebook.
+├── test_main.py              # The development and testing script.
+├── requirements.txt
+├── .env
+├── README.md
+│
+├── tools/                    # Modules for fetching external data.
+│   ├── financial_data_fetcher.py
+│   └── news_fetcher.py
+│
+├── workflows/                # Modules for agentic patterns.
+│   ├── news_analysis_chain.py
+│   ├── specialist_router.py
+│   └── report_evaluator.py
+│
+└── memory/                   # Directory where the agent saves its output.
+```
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+  * Python 3.12 or higher
+  * Git
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/your_username/Quant-Apprentice.git
+cd Quant-Apprentice
+```
+
+### 2. Create a Conda Environment
+
+```bash
+# For macOS/Linux
+
+
+```
+
+### 3. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Set Up API Keys
+
+Create a file named `.env` in the root of the project and add your API keys:
+
+```bash
+# .env file
+GOOGLE_API_KEY="GEMINI_API_KEY"
+FRED_API_KEY="FRED_API_KEY" (free)
+NEWS_API_KEY="NEWSAPI_ORG_KEY" (free)
+```
+
+### 5. Run the Agent
+
+Open the `quant_apprentice.ipynb` notebook and run the cells to see the agent perform its full, end-to-end analysis.
+
+### 5. Files and content
+
+- File: tools/financial_data_fetcher.py
+
+  Purpose: Fetches stock fundamentals and macroeconomic data.
+  
+  Functions It Contains: 
+  - get_stock_fundamentals(ticker_symbol: str)
+  - get_macro_economic_data(api_key: str)
+
+- File: tools/news_fetcher.py
+  Purpose: Fetches news articles for a company.
+  
+  Function It Contains:
+  - get_company_news(company_name: str, api_key: str)
+
+- File: workflows/news_analysis_chain.py
+  Purpose: Implements our first workflow (Prompt Chaining) to analyze a single article.
+
+  Function It Contains:
+  - analyze_article_chain(article_content: str, llm)
+
+- File: workflows/specialist_router.py
+  Purpose: Implements our second workflow (Routing) to send data to specialist prompts.
+
+  Function It Contains:
+
+  - route_and_execute_task(task_type: str, data: dict, llm)
