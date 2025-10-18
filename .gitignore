@@ -1,1 +1,35 @@
-Byte-compiled / optimized / DLL filespycache/*.py[cod]*$py.classC extensions*.soDistribution / packagingbuild/dist/*.egg-info/Virtual Environments.env.venvvenv/env/Jupyter Notebook checkpoints.ipynb_checkpointsIDE and editor directories.vscode/.idea/OS-generated files.DS_StoreThumbs.db--- Project Specific Ignores ---Ignore all local memory and database filessrc/memory/memory/Ignore all output files*.json*.mdBut DO NOT ignore the main README.md!README.mdIgnore Conda environment file if you're not sharing itenvironment.yml
+# Environments
+.env
+.venv
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# IDE and editor directories
+.vscode/
+.idea/
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# --- Project Specific Ignores ---
+
+# Ignore all local memory and database files from all versions
+src/memory/
+memory/
+v2_llm_graph/src/memory/
+
+# Ignore all output files
+*.json
+*.md
+
+# IMPORTANT: Un-ignore the main README file so it's still tracked
+!README.md
