@@ -2,12 +2,20 @@
 google-generativeai
 langchain
 langchain-google-genai
+# Agentic Graphs
+langgraph
+langchain_core
 
 # Data Fetching Tools
 yfinance
 fredapi
 newsapi-python
+sec-api
 
 # Utilities
 python-dotenv
 pandas
+
+# Vector Memory
+chromadb
+sentence-transformers

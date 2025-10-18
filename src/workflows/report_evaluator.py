@@ -4,30 +4,41 @@ import google.generativeai as genai
 
 # Agent Prompts for Synthesis and Evaluation 
 
+# --- Agent Prompts for Synthesis and Evaluation ---
+
 SYNTHESIS_PROMPT_TEMPLATE = """
 You are a Chief Investment Strategist. Your task is to synthesize the analyses from your specialist teams into a final, coherent investment report.
-You have received three reports:
-1.  **Quantitative Financial Analysis**: An objective look at the company's financial health and valuation.
-2.  **News Impact Analysis**: A short-term assessment of how recent news could affect the stock.
-3.  **Macroeconomic Context**: An overview of the broader market environment.
+
+**PRIOR ANALYSIS FOR CONTEXT (from your memory):**
+---
+{past_analysis}
+---
+
+**LATEST SEC FILING INSIGHTS:**
+---
+{sec_filings_summary}
+---
+
+**CURRENT SPECIALIST REPORTS:**
+---
+
+**Quantitative Financial Analysis:**
+{financial_analysis}
+---
+
+**News Impact Analysis:**
+{news_impact_analysis}
+
+---
+**Macroeconomic Context:**
+{market_context_analysis}
+---
 
 Based on these inputs, create a comprehensive investment report for {company_name}. The report must include:
 1.  **Executive Summary (2-3 sentences)**: A high-level overview of the findings.
 2.  **Key Findings**: A bulleted list combining the most critical points from all three analyses.
 3.  **Final Recommendation**: A clear 'Buy', 'Hold', or 'Sell' rating.
 4.  **Justification (3 bullet points)**: A clear, data-driven rationale for your recommendation, referencing the specialist reports.
-
-**SPECIALIST REPORTS:**
----
-**1. Quantitative Financial Analysis:**
-{financial_analysis}
----
-**2. News Impact Analysis:**
-{news_impact_analysis}
----
-**3. Macroeconomic Context:**
-{market_context_analysis}
----
 """
 
 EVALUATOR_PROMPT_TEMPLATE = """
