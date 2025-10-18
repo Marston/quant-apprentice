@@ -19,3 +19,8 @@ pandas
 # Vector Memory
 chromadb
 sentence-transformers
+
+# test
+pytest
+pytest-mock
+pytest-cov

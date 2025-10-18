@@ -58,9 +58,23 @@ def gather_data_node(state: AgentState):
     company_name = state['company_name']
     company_ticker = state['company_ticker']
     
-    financial_data = get_stock_fundamentals(company_ticker)
-    macro_data = get_macro_economic_data(os.getenv("FRED_API_KEY"))
-    news_data = get_company_news(company_name, os.getenv("NEWS_API_KEY"), num_articles=3)
+    try:
+        financial_data = get_stock_fundamentals(company_ticker)
+    except Exception as e:
+        print(f"[Error] Failed to fetch stock fundamentals: {str(e)}")
+        financial_data = {"error": str(e), "data": {}}
+        
+    try:
+        macro_data = get_macro_economic_data(os.getenv("FRED_API_KEY"))
+    except Exception as e:
+        print(f"[Error] Failed to fetch macro data: {str(e)}")
+        macro_data = {"error": str(e), "data": {}}
+        
+    try:
+        news_data = get_company_news(company_name, os.getenv("NEWS_API_KEY"), num_articles=3)
+    except Exception as e:
+        print(f"[Error] Failed to fetch news data: {str(e)}")
+        news_data = {"error": str(e), "articles": []}
     
     return {
         "financial_data": financial_data,
@@ -94,15 +108,20 @@ def specialist_analysis_node(state: AgentState):
 
 def synthesize_report_node(state: AgentState):
     print("[Node]: Synthesizing Draft Report...")
-    prompt = SYNTHESIS_PROMPT_TEMPLATE.format(
-        company_name=state['company_name'],
-        past_analysis=state['past_analysis'],
-        sec_filings_summary=state.get('sec_filings_data', 'Not available'),
-        financial_analysis=state['financial_analysis'],
-        news_impact_analysis=state['news_impact_analysis'],
-        market_context_analysis=state['market_context_analysis']
-    )
-    draft_report = llm.generate_content(prompt).text
+    try:
+        prompt = SYNTHESIS_PROMPT_TEMPLATE.format(
+            company_name=state['company_name'],
+            past_analysis=state['past_analysis'],
+            sec_filings_summary=state.get('sec_filings_data', 'Not available'),
+            financial_analysis=state['financial_analysis'],
+            news_impact_analysis=state['news_impact_analysis'],
+            market_context_analysis=state['market_context_analysis']
+        )
+        draft_report = llm.generate_content(prompt, timeout=30).text
+    except Exception as e:
+        print(f"[Error] LLM synthesis error: {str(e)}")
+        draft_report = f"Error generating report: {str(e)}"
+    
     revision_count = state.get('revision_count', 0) + 1
     return {"draft_report": draft_report, "revision_count": revision_count}
 
@@ -130,18 +149,21 @@ def refine_report_node(state: AgentState):
 def retrieve_from_memory_node(state: AgentState):
     print("--- [Node]: Retrieving from Vector Memory... ---")
     company_name = state['company_name']
-    memory = VectorMemory()
-    
-    # Formulate a query to find relevant past analyses
-    query = f"What was my past analysis and conclusion for {company_name}?"
-    results = memory.query_memory(query, n_results=1)
-    
-    if results:
-        past_analysis = "\n".join(results)
-        print(f"--- [Memory]: Found relevant past analysis. ---")
-    else:
-        past_analysis = "No prior analysis found in memory."
-        print(f"--- [Memory]: No relevant past analysis found. ---")
+    try:
+        memory = VectorMemory()
+        # Formulate a query to find relevant past analyses
+        query = f"What was my past analysis and conclusion for {company_name}?"
+        results = memory.query_memory(query, n_results=1)
+        
+        if results:
+            past_analysis = "\n".join(results)
+            print(f"--- [Memory]: Found relevant past analysis. ---")
+        else:
+            past_analysis = "No prior analysis found in memory."
+            print(f"--- [Memory]: No relevant past analysis found. ---")
+    except Exception as e:
+        print(f"[Error] Memory system error: {str(e)}")
+        past_analysis = f"Error accessing memory system: {str(e)}"
         
     return {"past_analysis": past_analysis}
 

@@ -88,8 +88,10 @@ def generate_and_evaluate_report(
     company_name: str, 
     financial_analysis: str, 
     news_impact_analysis: str, 
-    market_context_analysis: str, 
-    llm: genai.GenerativeModel
+    market_context_analysis: str,
+    llm: genai.GenerativeModel,
+    past_analysis: str = "No prior analysis available",
+    sec_filings_summary: str = "Not available"
 ) -> dict:
     """
     Orchestrates the generate -> evaluate -> refine workflow.
@@ -103,6 +105,8 @@ def generate_and_evaluate_report(
     print("--- [Step 1]: Generating initial draft report... ---")
     synthesis_prompt = SYNTHESIS_PROMPT_TEMPLATE.format(
         company_name=company_name,
+        past_analysis=past_analysis,
+        sec_filings_summary=sec_filings_summary,
         financial_analysis=financial_analysis,
         news_impact_analysis=news_impact_analysis,
         market_context_analysis=market_context_analysis

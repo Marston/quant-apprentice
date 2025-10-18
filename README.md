@@ -17,7 +17,9 @@ It uses hard-coded rules for analysis and demonstrates the basic structure of an
 
 ### 📁 `v1_llm_linear/`
 
-* **Description**: The first integration of an LLM (Gemini) into the workflow. This version replaces the rule-based logic with LLM prompts for tasks like news analysis and report synthesis, but still follows a linear, top-to-bottom script.
+* **Description**: The first integration of an LLM (Gemini) into the workflow. 
+This version replaces the rule-based logic with LLM prompts for tasks like news analysis and report synthesis, 
+but still follows a linear, top-to-bottom script.
 * **How to Run**: See the `v1_linear_agent.ipynb` notebook inside this directory.
 
 ### 📁 `v2_llm_graph/`
@@ -27,14 +29,43 @@ This version uses LangGraph, incorporates a vector database for semantic memory 
 (SEC filings), and a robust self-critique loop. **This is the final version for submission.**
 * **How to Run**: See the `v2_graph_agent.ipynb` notebook inside this directory.
 
-* **How to Run**: See the `v2_graph_agent.ipynb` notebook inside this directory.
-
 ---
 
 ## 🚀 Getting Started (for Final Version 2)
 
-### 1. Install Dependencies
+### 1. Set up Environment
+
+It is recommended to use a Conda environment.
 
 ```bash
-    pip install -r requirements.txt
+conda env create -f src/environment.yml
+conda activate quant-apprentice
+```
+
+### 2. Create `.env` File
+
+The agent requires API keys for various data sources. Create a `.env` file in the root directory and 
+add the following, replacing `your_key_here` with your actual API keys:
+
+```bash
+GOOGLE_API_KEY="your_key_here"
+NEWS_API_KEY="your_key_here"
+SEC_API_KEY="your_key_here"
+FRED_API_KEY="your_key_here"
+```
+
+### 3. Install Dependencies
+
+Install the required Python packages:
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Running Tests
+
+To ensure everything is set up correctly, run the test suite:
+
+```bash
+pytest src/tests/
 ```
