@@ -42,14 +42,26 @@ python -m pytest tests/ -v -k "not integration"
 ```
 
 Current test coverage:
-- Overall coverage: 95%
-- Core components:
-  - Agent Graph: 90%
-  - Tools (News, SEC, Financial): 100%
-  - Vector Memory: 100%
-  - Workflows: 100%
+
+* Overall coverage: 95%
+* Core components:
+  * Agent Graph: 90%
+  * Tools (News, SEC, Financial): 100%
+  * Vector Memory: 100%
+  * Workflows: 100%
 
 ## 🚀 Getting Started (for Final Version 2)
+
+### Platform Support
+
+This project was developed and tested on macOS but should be platform-independent as it uses:
+
+* Python's standard library and cross-platform packages
+* Conda for environment management
+* SQLite-based vector storage (ChromaDB)
+* Standard file paths with `os.path` for compatibility
+
+If you encounter any platform-specific issues, please open an issue on GitHub.
 
 ### 1. Set up Environment
 
@@ -62,7 +74,7 @@ conda activate quant-apprentice
 
 ### 2. Create `.env` File
 
-The agent requires API keys for various data sources. Create a `.env` file in the root directory and 
+The agent requires API keys for various data sources. Create a `.env` file in the root directory and  
 add the following, replacing `your_key_here` with your actual API keys:
 
 ```bash
