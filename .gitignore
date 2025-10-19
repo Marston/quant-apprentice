@@ -33,3 +33,8 @@ v2_llm_graph/src/memory/
 
 # IMPORTANT: Un-ignore the main README file so it's still tracked
 !README.md
+
+# Ignore memory and database files in the src directory, but not in subdirectories
+*.db
+*.sqlite3
+*.bin
